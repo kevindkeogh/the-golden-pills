@@ -112,6 +112,7 @@ func makePost() {
 
 //
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
 	for {
 		makePost()
 		time.Sleep(20 * time.Minute)
