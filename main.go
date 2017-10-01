@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/base64"
 	"fmt"
+	"html"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -81,20 +82,22 @@ func redditLogin() *geddit.OAuthSession {
 }
 
 //
-func redPillPost(client *geddit.OAuthSession) string {
-	options := geddit.ListingOptions{
-		Limit: 20,
-	}
-	submission, err := client.SubredditSubmissions(
-		"TheRedPill",
-		geddit.NewSubmissions,
-		options)
+func redPillComment(client *geddit.OAuthSession) string {
+	comments, err := client.SubredditComments("TheRedPill")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	randPost := rand.Intn(20)
-	return submission[randPost].Title
+	var comment string
+	numComments := len(comments)
+	for {
+		num := rand.Intn(numComments)
+		comment = html.UnescapeString(comments[num].Body)
+		if len(comment) <= 140 {
+			break
+		}
+	}
+	return comment
 }
 
 //
@@ -103,7 +106,7 @@ func makePost() {
 	twitterClient := twitterLogin()
 	redditClient := redditLogin()
 
-	text := redPillPost(redditClient)
+	text := redPillComment(redditClient)
 	img := gifString(giphyClient)
 	media, _ := twitterClient.UploadMedia(img)
 
