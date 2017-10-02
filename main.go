@@ -90,22 +90,27 @@ func redPillComment(client *geddit.OAuthSession) string {
 	}
 
 	var comment string
+	var author string
+	var text string
 	var numGuesses int
 	numComments := len(comments)
 	for {
 		numGuesses = 0
 		num := rand.Intn(numComments)
-		comment = html.UnescapeString(comments[num].Body)
-		for len(comment) > 140 && numGuesses < 10 {
+		comment = comments[num].Body
+		author = comments[num].Author
+		text = html.UnescapeString(comment + "&#13;&#10;&#13;&#10; /u/" + author)
+		for len(text) > 140 && numGuesses < 10 {
 			numGuesses++
 			splitComment := strings.Split(comment, ".")
 			comment = strings.Join(splitComment[:len(splitComment)-1], ".") + "."
+			text = html.UnescapeString(comment + "&#13;&#10;&#13;&#10; /u/" + author)
 		}
-		if len(comment) <= 140 && len(comment) > 0 {
+		if len(text) <= 140 && len(comment) > 1 {
 			break
 		}
 	}
-	return comment
+	return text
 }
 
 //
