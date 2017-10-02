@@ -26,7 +26,7 @@ func giphyLogin() *gophy.Client {
 
 func gifString(client *gophy.Client) string {
 	// Get gif object from giphy
-	randOffset := rand.Intn(200)
+	randOffset := rand.Intn(500)
 	gifs, _, err := client.SearchGifs("golden girls", "", 1, randOffset)
 	if err != nil {
 		fmt.Println(err)
@@ -99,7 +99,7 @@ func redPillComment(client *geddit.OAuthSession) string {
 		for len(comment) > 140 && numGuesses < 10 {
 			numGuesses++
 			splitComment := strings.Split(comment, ".")
-			comment = strings.Join(splitComment[:len(splitComment)-1], ".")
+			comment = strings.Join(splitComment[:len(splitComment)-1], ".") + "."
 		}
 		if len(comment) <= 140 && len(comment) > 0 {
 			break
