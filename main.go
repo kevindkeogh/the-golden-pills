@@ -89,11 +89,17 @@ func redPillComment(client *geddit.OAuthSession) string {
 	}
 
 	var comment string
+	var numGuesses int
 	numComments := len(comments)
 	for {
+		numGuesses = 0
 		num := rand.Intn(numComments)
 		comment = html.UnescapeString(comments[num].Body)
-		if len(comment) <= 140 {
+		for comment <= 140 || numGuesses > 10 {
+			numGuesses++
+			comment = strings.join(strings.split(comment, ".")[:-1], ".")
+		}
+		if comment <= 140 {
 			break
 		}
 	}
