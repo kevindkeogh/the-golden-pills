@@ -8,6 +8,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/ChimeraCoder/anaconda"
@@ -95,11 +96,13 @@ func redPillComment(client *geddit.OAuthSession) string {
 		numGuesses = 0
 		num := rand.Intn(numComments)
 		comment = html.UnescapeString(comments[num].Body)
-		for comment <= 140 || numGuesses > 10 {
+		for len(comment) > 140 && numGuesses < 10 {
 			numGuesses++
-			comment = strings.join(strings.split(comment, ".")[:-1], ".")
+			splitComment := strings.Split(comment, ".")
+			comment = strings.Join(splitComment[:len(splitComment)-1], ".")
+			fmt.Println(comment)
 		}
-		if comment <= 140 {
+		if len(comment) <= 140 {
 			break
 		}
 	}
