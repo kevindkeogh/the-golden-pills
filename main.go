@@ -100,7 +100,6 @@ func redPillComment(client *geddit.OAuthSession) string {
 			numGuesses++
 			splitComment := strings.Split(comment, ".")
 			comment = strings.Join(splitComment[:len(splitComment)-1], ".")
-			fmt.Println(comment)
 		}
 		if len(comment) <= 140 {
 			break
