@@ -101,7 +101,7 @@ func redPillComment(client *geddit.OAuthSession) string {
 			splitComment := strings.Split(comment, ".")
 			comment = strings.Join(splitComment[:len(splitComment)-1], ".")
 		}
-		if len(comment) <= 140 {
+		if len(comment) <= 140 && len(comment) > 0 {
 			break
 		}
 	}
