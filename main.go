@@ -140,6 +140,6 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	for {
 		makePost()
-		time.Sleep(30 * time.Minute)
+		time.Sleep(60 * time.Minute)
 	}
 }
